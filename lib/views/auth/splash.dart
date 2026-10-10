@@ -101,7 +101,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
                     ],
                   ),
                   child: Image.asset(
-                    AppImages.splash,
+                    AppImages.roLogo,
                     width: 100,
                     height: 100,
                     fit: BoxFit.contain,

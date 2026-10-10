@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:reminder/routes/app_routes.dart';
 import 'package:reminder/utils/constants/colors.dart';
+import 'package:reminder/widgets/add_button.dart';
+import 'package:reminder/widgets/custom_search_bar.dart';
+import 'package:reminder/utils/date/dateutils.dart';
+import 'package:reminder/utils/custom_launchers.dart';
+import 'package:intl/intl.dart';
 
 class Customers extends StatelessWidget {
   const Customers({super.key});
@@ -27,67 +34,27 @@ class Customers extends StatelessWidget {
                 child: Column(
                   children: [
                     const SizedBox(height: 24),
-                    const CustomerSearchBar(),
+                    const CustomSearchBar(
+                      hintText: 'Search by name, phone or location...',
+                    ),
                     const SizedBox(height: 16),
-                    const CustomerCategoryChips(),
+                    const CustomerDateFilter(),
                     const SizedBox(height: 16),
                     Expanded(
-                      child: ListView(
+                      child: ListView.builder(
+                        shrinkWrap: true,
                         physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        children: [
-                          CustomerCard(
+                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 150),
+                        itemCount: 7,
+                        itemBuilder: (context, index) {
+                          return CustomerCard(
                             name: 'Rahul Sharma',
                             phone: '+91 98765 43210',
-                            status: 'Active',
-                            statusColor: Colors.teal,
-                            statusBg: Colors.teal.withOpacity(0.1),
                             location: 'Sector 12, Noida',
                             device: 'AquaPure RO X1',
                             initials: 'RS',
-                          ),
-                          CustomerCard(
-                            name: 'Priya Singh',
-                            phone: '+91 87654 32109',
-                            status: 'Active',
-                            statusColor: Colors.teal,
-                            statusBg: Colors.teal.withOpacity(0.1),
-                            location: 'Indirapuram, Ghaziabad',
-                            device: 'AquaPure RO X1',
-                            initials: 'PS',
-                          ),
-                          CustomerCard(
-                            name: 'Neha Verma',
-                            phone: '+91 91234 56789',
-                            status: 'Service Due',
-                            statusColor: Colors.orange,
-                            statusBg: Colors.orange.withOpacity(0.1),
-                            location: 'Vasundhara, Ghaziabad',
-                            device: 'AquaPure RO Pro',
-                            initials: 'NV',
-                          ),
-                          CustomerCard(
-                            name: 'Rohit Kumar',
-                            phone: '+91 99887 66554',
-                            status: 'Active',
-                            statusColor: Colors.teal,
-                            statusBg: Colors.teal.withOpacity(0.1),
-                            location: 'Noida Sector 62',
-                            device: 'AquaPure RO X1',
-                            initials: 'RK',
-                          ),
-                          CustomerCard(
-                            name: 'Sandeep Yadav',
-                            phone: '+91 90011 22334',
-                            status: 'Follow Up',
-                            statusColor: Colors.blue,
-                            statusBg: Colors.blue.withOpacity(0.1),
-                            location: 'Greater Noida',
-                            device: 'AquaPure RO Pro',
-                            initials: 'SY',
-                          ),
-                          const SizedBox(height: 80),
-                        ],
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -97,9 +64,16 @@ class Customers extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: CustomFloatingAddButton(
+        padding: const EdgeInsets.only(bottom: 70),
+        title: "Add Customer",
+        onTap: () {
+          context.push(AppRoutes.addCustomer);
+        },
+      ),
     );
   }
-
 }
 
 class CustomerHeader extends StatelessWidget {
@@ -113,9 +87,12 @@ class CustomerHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Row(
-            children: const [
-              Icon(Icons.menu, color: AppColors.white, size: 28),
-              SizedBox(width: 16),
+            children: [
+              Image.network(
+                "https://cdn-icons-png.flaticon.com/128/166/166258.png",
+                height: 28,
+              ),
+              SizedBox(width: 15),
               Text(
                 'Customers',
                 style: TextStyle(
@@ -126,12 +103,50 @@ class CustomerHeader extends StatelessWidget {
               ),
             ],
           ),
-          Row(
-            children: const [
-              Icon(Icons.search, color: AppColors.white, size: 26),
-              SizedBox(width: 16),
-              Icon(Icons.filter_alt_outlined, color: AppColors.white, size: 26),
-            ],
+        ],
+      ),
+    );
+  }
+}
+
+class CustomerDateFilter extends StatefulWidget {
+  const CustomerDateFilter({super.key});
+
+  @override
+  State<CustomerDateFilter> createState() => _CustomerDateFilterState();
+}
+
+class _CustomerDateFilterState extends State<CustomerDateFilter> {
+  DateTime? fromDate;
+  DateTime? toDate;
+
+  String _formatDate(DateTime? date, String defaultLabel) {
+    if (date == null) return defaultLabel;
+    return DateFormat('dd-MM-yyyy').format(date);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          Expanded(
+            child: DateFieldItem(
+              label: _formatDate(fromDate, 'From Date'),
+              onDateSelected: (date) {
+                if (date != null) setState(() => fromDate = date);
+              },
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: DateFieldItem(
+              label: _formatDate(toDate, 'To Date'),
+              onDateSelected: (date) {
+                if (date != null) setState(() => toDate = date);
+              },
+            ),
           ),
         ],
       ),
@@ -139,83 +154,45 @@ class CustomerHeader extends StatelessWidget {
   }
 }
 
-class CustomerSearchBar extends StatelessWidget {
-  const CustomerSearchBar({super.key});
+class DateFieldItem extends StatelessWidget {
+  final String label;
+  final ValueChanged<DateTime?>? onDateSelected;
+
+  const DateFieldItem({super.key, required this.label, this.onDateSelected});
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+    return GestureDetector(
+      onTap: () async {
+        final date = await selectGlobalDate(context);
+        if (onDateSelected != null) {
+          onDateSelected!(date);
+        }
+      },
       child: Container(
-        height: 50,
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           color: AppColors.white,
-          borderRadius: BorderRadius.circular(25),
-          boxShadow: [
-            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 15, offset: const Offset(0, 5)),
-          ],
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade200),
         ),
         child: Row(
-          children: const [
-            Icon(Icons.search, color: Colors.grey, size: 22),
-            SizedBox(width: 12),
-            Text('Search by name, phone or location...', style: TextStyle(color: Colors.black38, fontSize: 13, fontWeight: FontWeight.w500)),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.black54,
+                fontSize: 13,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const Icon(
+              Icons.calendar_today,
+              size: 16,
+              color: AppColors.primaryBlue,
+            ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class CustomerCategoryChips extends StatelessWidget {
-  const CustomerCategoryChips({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      physics: const BouncingScrollPhysics(),
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: const [
-          CustomerChip(label: 'All', isSelected: true),
-          SizedBox(width: 12),
-          CustomerChip(label: 'Active'),
-          SizedBox(width: 12),
-          CustomerChip(label: 'Pending Service'),
-          SizedBox(width: 12),
-          CustomerChip(label: 'Inactive'),
-        ],
-      ),
-    );
-  }
-}
-
-class CustomerChip extends StatelessWidget {
-  final String label;
-  final bool isSelected;
-
-  const CustomerChip({
-    super.key,
-    required this.label,
-    this.isSelected = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
-      decoration: BoxDecoration(
-        color: isSelected ? AppColors.primaryBlue : Colors.transparent,
-        borderRadius: BorderRadius.circular(25),
-      ),
-      child: Text(
-        label,
-        style: TextStyle(
-          color: isSelected ? AppColors.white : AppColors.textSecondary,
-          fontSize: 13,
-          fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
         ),
       ),
     );
@@ -225,9 +202,6 @@ class CustomerChip extends StatelessWidget {
 class CustomerCard extends StatelessWidget {
   final String name;
   final String phone;
-  final String status;
-  final Color statusColor;
-  final Color statusBg;
   final String location;
   final String device;
   final String initials;
@@ -236,9 +210,6 @@ class CustomerCard extends StatelessWidget {
     super.key,
     required this.name,
     required this.phone,
-    required this.status,
-    required this.statusColor,
-    required this.statusBg,
     required this.location,
     required this.device,
     required this.initials,
@@ -254,7 +225,7 @@ class CustomerCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
+            color: Colors.black.withValues(alpha: 0.03),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -297,34 +268,68 @@ class CustomerCard extends StatelessWidget {
                         color: AppColors.primaryBlue,
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: statusBg,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        status,
-                        style: TextStyle(
-                          color: statusColor,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () => openCall(phone),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.blue.shade50,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.call,
+                              color: Colors.blue.shade700,
+                              size: 16,
+                            ),
+                          ),
                         ),
-                      ),
+                        const SizedBox(width: 8),
+                        GestureDetector(
+                          onTap: () => openWhatsApp(phone),
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.green.shade50,
+                              shape: BoxShape.circle,
+                            ),
+                            child: Image.network(
+                              "https://cdn-icons-png.flaticon.com/128/3670/3670051.png",
+                              height: 16,
+                              width: 16,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
                 const SizedBox(height: 4),
                 Text(
                   phone,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: Colors.black54),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.black54,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Row(
                   children: [
-                    const Icon(Icons.location_on_outlined, size: 14, color: Colors.grey),
+                    const Icon(
+                      Icons.location_on_outlined,
+                      size: 14,
+                      color: Colors.grey,
+                    ),
                     const SizedBox(width: 6),
-                    Text(location, style: const TextStyle(fontSize: 11, color: Colors.black54)),
+                    Text(
+                      location,
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Colors.black54,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 4),
@@ -333,12 +338,26 @@ class CustomerCard extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(Icons.water_drop_outlined, size: 14, color: Colors.grey),
+                        const Icon(
+                          Icons.water_drop_outlined,
+                          size: 14,
+                          color: Colors.grey,
+                        ),
                         const SizedBox(width: 6),
-                        Text(device, style: const TextStyle(fontSize: 11, color: Colors.black54)),
+                        Text(
+                          device,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: Colors.black54,
+                          ),
+                        ),
                       ],
                     ),
-                    const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.grey),
+                    const Icon(
+                      Icons.arrow_forward_ios,
+                      size: 14,
+                      color: Colors.grey,
+                    ),
                   ],
                 ),
               ],

@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reminder/utils/constants/colors.dart';
+import 'package:reminder/routes/app_routes.dart';
+import 'package:reminder/widgets/custom_dialogues.dart';
+import 'package:reminder/widgets/add_button.dart';
+import 'package:reminder/widgets/custom_search_bar.dart';
 
 class Products extends StatelessWidget {
   const Products({super.key});
@@ -8,65 +12,100 @@ class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FC),
-      // slightly cooler premium background
+      backgroundColor: AppColors.primaryBlue,
       body: SafeArea(
+        bottom: false,
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const ProductHeader(),
             const SizedBox(height: 16),
-            const ProductSearchBar(),
-            const SizedBox(height: 20),
-            const ProductCategoryChips(),
-            const SizedBox(height: 20),
             Expanded(
-              child: ListView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                children: const [
-                  ProductCard(
-                    title: 'AquaPure Pro X1',
-                    subtitle: 'RO + UV + UF + TDS Control',
-                    specs: [
-                      '12 L Capacity',
-                      'Smart Indicator',
-                      '1 Year Warranty',
-                    ],
-                    price: '16,999',
+              child: Container(
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: AppColors.inputBackground,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
                   ),
-                  ProductCard(
-                    title: 'AquaPure Smart',
-                    subtitle: 'RO + UV + Copper',
-                    specs: [
-                      '10 L Capacity',
-                      'Smart Indicator',
-                      '1 Year Warranty',
-                    ],
-                    price: '13,499',
-                  ),
-                  ProductCard(
-                    title: 'AquaPure Elite',
-                    subtitle: 'RO + UV + UF + Alkaline',
-                    specs: [
-                      '12 L Capacity',
-                      'Touch Display',
-                      '2 Year Warranty',
-                    ],
-                    price: '19,999',
-                  ),
-                  ProductCard(
-                    title: 'Filter Kit (Complete Set)',
-                    subtitle: 'Sediment + Carbon + RO Membrane\n+ Post Carbon',
-                    specs: ['Genuine AquaPure Filters'],
-                    price: '3,499',
-                  ),
-                  SizedBox(height: 20),
-                ],
+                ),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 24),
+                    const CustomSearchBar(hintText: "Search products..."),
+                    const SizedBox(height: 16),
+                    const ProductCategoryChips(),
+                    const SizedBox(height: 16),
+                    Expanded(
+                      child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 150),
+                        children: const [
+                          ProductCard(
+                            title: 'RO Water Purifier',
+                            subtitle: 'AquaFresh Pro',
+                            price: '12,500.00',
+                            category: 'RO Purifier',
+                            icon: Icons.water_drop,
+                            inStock: true,
+                          ),
+                          ProductCard(
+                            title: 'Sediment Filter',
+                            subtitle: '10 Inch',
+                            price: '350.00',
+                            category: 'Filter',
+                            icon: Icons.filter_alt,
+                            inStock: true,
+                          ),
+                          ProductCard(
+                            title: 'Carbon Filter',
+                            subtitle: '10 Inch',
+                            price: '450.00',
+                            category: 'Filter',
+                            icon: Icons.kitchen,
+                            inStock: true,
+                          ),
+                          ProductCard(
+                            title: 'RO Membrane',
+                            subtitle: '75 GPD',
+                            price: '1,800.00',
+                            category: 'Spare Parts',
+                            icon: Icons.settings_input_component,
+                            inStock: true,
+                          ),
+                          ProductCard(
+                            title: 'Post Carbon Filter',
+                            subtitle: '10 Inch',
+                            price: '400.00',
+                            category: 'Filter',
+                            icon: Icons.layers,
+                            inStock: true,
+                          ),
+                          ProductCard(
+                            title: 'Booster Pump',
+                            subtitle: '100 PSI',
+                            price: '2,500.00',
+                            category: 'Spare Parts',
+                            icon: Icons.power,
+                            inStock: true,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ],
         ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: CustomFloatingAddButton(
+        padding: const EdgeInsets.only(bottom: 70),
+        title: "Add Product",
+        onTap: () {
+          // context.push(AppRoutes.addProduct);
+        },
       ),
     );
   }
@@ -78,61 +117,24 @@ class ProductHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () {
-                  context.pop();
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.white,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primaryBlue.withOpacity(0.1),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios_new,
-                    color: AppColors.primaryBlue,
-                    size: 16,
-                  ),
-                ),
+              GestureDetector(
+                onTap: () => context.pop(),
+                child: const Icon(Icons.arrow_back, color: AppColors.white),
               ),
               const SizedBox(width: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text(
-                    'Products',
-                    style: TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w900,
-                      color: AppColors.primaryBlue,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                  SizedBox(height: 4),
-                  Text(
-                    'Pure Water Solutions for Every Home',
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
+              const Text(
+                'Products',
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: AppColors.white,
+                ),
               ),
             ],
           ),
@@ -142,79 +144,22 @@ class ProductHeader extends StatelessWidget {
   }
 }
 
-class ProductSearchBar extends StatelessWidget {
-  const ProductSearchBar({super.key});
+class ProductCategoryChips extends StatefulWidget {
+  const ProductCategoryChips({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              height: 50,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryBlue.withOpacity(0.05),
-                    blurRadius: 15,
-                    offset: const Offset(0, 5),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: const [
-                  Icon(Icons.search, color: AppColors.primaryBlue, size: 22),
-                  SizedBox(width: 12),
-                  Text(
-                    'Search products...',
-                    style: TextStyle(
-                      color: Colors.black38,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(width: 16),
-          Container(
-            height: 50,
-            width: 50,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [AppColors.lightBlue, AppColors.primaryBlue],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primaryBlue.withOpacity(0.3),
-                  blurRadius: 12,
-                  offset: const Offset(0, 6),
-                ),
-              ],
-            ),
-            child: const Icon(
-              Icons.tune_rounded,
-              color: AppColors.white,
-              size: 22,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  State<ProductCategoryChips> createState() => _ProductCategoryChipsState();
 }
 
-class ProductCategoryChips extends StatelessWidget {
-  const ProductCategoryChips({super.key});
+class _ProductCategoryChipsState extends State<ProductCategoryChips> {
+  String selectedChip = 'All';
+  final List<String> chips = [
+    'All',
+    'RO Purifiers',
+    'Filters',
+    'Spare Parts',
+    'Accessories',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -223,15 +168,22 @@ class ProductCategoryChips extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
-        children: const [
-          ProductChip(label: 'All', isSelected: true),
-          SizedBox(width: 12),
-          ProductChip(label: 'RO Purifiers'),
-          SizedBox(width: 12),
-          ProductChip(label: 'Filters'),
-          SizedBox(width: 12),
-          ProductChip(label: 'Accessories'),
-        ],
+        children: chips.map((label) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 12),
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  selectedChip = label;
+                });
+              },
+              child: ProductChip(
+                label: label,
+                isSelected: selectedChip == label,
+              ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -248,29 +200,8 @@ class ProductChip extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
       decoration: BoxDecoration(
-        gradient: isSelected
-            ? const LinearGradient(
-                colors: [AppColors.lightBlue, AppColors.primaryBlue],
-              )
-            : null,
-        color: isSelected ? null : AppColors.white,
+        color: isSelected ? AppColors.primaryBlue : Colors.transparent,
         borderRadius: BorderRadius.circular(25),
-        boxShadow: isSelected
-            ? [
-                BoxShadow(
-                  color: AppColors.primaryBlue.withOpacity(0.3),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ]
-            : [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  blurRadius: 5,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-        border: isSelected ? null : Border.all(color: Colors.grey.shade200),
       ),
       child: Text(
         label,
@@ -287,111 +218,122 @@ class ProductChip extends StatelessWidget {
 class ProductCard extends StatelessWidget {
   final String title;
   final String subtitle;
-  final List<String> specs;
   final String price;
+  final String category;
+  final IconData icon;
+  final bool inStock;
 
   const ProductCard({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.specs,
     required this.price,
+    required this.category,
+    required this.icon,
+    required this.inStock,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(24),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryBlue.withOpacity(0.06),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 100,
-            height: 120,
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Color(0xFFF0F5FB), Color(0xFFE2EDF8)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
+    return GestureDetector(
+      onTap: () => context.push(AppRoutes.productDetail),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.03),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 70,
+              height: 70,
+              decoration: BoxDecoration(
+                color: const Color(0xFFEAF2FF),
+                borderRadius: BorderRadius.circular(12),
               ),
-              borderRadius: BorderRadius.circular(16),
+              child: Icon(icon, color: AppColors.primaryBlue, size: 30),
             ),
-            child: const Icon(
-              Icons.water_drop,
-              size: 45,
-              color: AppColors.primaryBlue,
-            ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryBlue,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black54,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ...specs.map(
-                  (spec) => Padding(
-                    padding: const EdgeInsets.only(bottom: 4),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.check_circle,
-                          size: 12,
-                          color: Color(0xFF00C853),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          title,
+                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
                         ),
-                        const SizedBox(width: 6),
-                        Text(
-                          spec,
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black45,
+                      ),
+                      if (inStock)
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: Colors.green.shade50,
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: const [
+                              Icon(Icons.check_circle, color: Colors.green, size: 10),
+                              SizedBox(width: 2),
+                              Text('In Stock', style: TextStyle(color: Colors.green, fontSize: 9, fontWeight: FontWeight.bold)),
+                            ],
                           ),
                         ),
-                      ],
+                      const SizedBox(width: 8),
+                      PopupMenuButton<String>(
+                        icon: const Icon(Icons.more_vert, color: Colors.blueGrey, size: 18),
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        onSelected: (value) {
+                          if (value == 'delete') {
+                            CustomDialogues.showDeleteConfirmationDialog(
+                              context,
+                              title: 'Delete Product',
+                              content: 'Are you sure you want to delete this product? This action cannot be undone.',
+                              onConfirm: () {},
+                            );
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          const PopupMenuItem(value: 'edit', child: Text('Edit')),
+                          const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                  const SizedBox(height: 8),
+                  Text('₹ $price', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: AppColors.primaryBlue)),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFEAF2FF),
+                      borderRadius: BorderRadius.circular(4),
                     ),
+                    child: Text(category, style: const TextStyle(color: AppColors.primaryBlue, fontSize: 10, fontWeight: FontWeight.w500)),
                   ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  '₹ $price',
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w900,
-                    color: AppColors.primaryBlue,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
