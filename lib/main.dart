@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: AppColors.primaryBlue,
         scaffoldBackgroundColor: AppColors.white,
-        textTheme: GoogleFonts.poppinsTextTheme(),
+        textTheme: GoogleFonts.spaceGroteskTextTheme(),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
           fillColor: AppColors.inputBackground,
@@ -32,11 +32,11 @@ class MyApp extends StatelessWidget {
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppColors.inputBorder),
+            borderSide: const BorderSide(color: AppColors.inputBorder,width: 1.5),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: AppColors.primaryBlue),
+            borderSide: const BorderSide(color: AppColors.primaryBlue,width: 1.5),
           ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(

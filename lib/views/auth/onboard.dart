@@ -28,14 +28,14 @@ class _OnboardState extends State<Onboard> {
       "subtitle":
           "Receive intelligent alerts for filter replacements and schedule expert servicing with a single tap.",
       "image":
-          "https://img.magnific.com/free-vector/tiny-woman-pouring-clean-water-from-faucet-with-mountain-landscape_74855-11024.jpg?semt=ais_hybrid&w=740&q=80",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYlE31sKIFk9ruqdd6fmXqpemq5kCcwV-fGrbWHUvKgg&s=10",
     },
     {
       "title": "Purity Guaranteed",
       "subtitle":
           "Ensuring the highest standards of water quality for your workspace and family. Health begins with pure water.",
       "image":
-          "https://img.magnific.com/free-vector/tiny-woman-pouring-clean-water-from-faucet-with-mountain-landscape_74855-11024.jpg?semt=ais_hybrid&w=740&q=80",
+          "https://img.magnific.com/free-vector/event-calendar-notification-freelancer-project-deadline-date-appointment-reminder-calendar-megaphone-isolated-design-element-time-management-concept-illustration_335657-1693.jpg?semt=ais_hybrid&w=740&q=80",
     },
   ];
 
@@ -242,55 +242,82 @@ class _OnboardState extends State<Onboard> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.splashGradient1.withValues(alpha: 0.5),
+        gradient: LinearGradient(
+          colors: [
+            AppColors.lightBlue.withValues(alpha: 0.01),
+            AppColors.lightBlue.withValues(alpha: 0.01),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
       ),
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // Elegant decorative gradient circles
+          // Elegant Radial Background Glows
           Positioned(
-            top: -40,
-            right: -60,
+            top: -50,
+            right: -50,
             child: Container(
-              width: 200,
-              height: 200,
+              width: 250,
+              height: 250,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
+                gradient: RadialGradient(
                   colors: [
-                    AppColors.splashGradient2.withValues(alpha: 0.2),
+                    AppColors.splashGradient2.withValues(alpha: 0.15),
                     AppColors.white.withValues(alpha: 0.0),
                   ],
-                  begin: Alignment.topRight,
-                  end: Alignment.bottomLeft,
                 ),
               ),
             ),
           ),
           Positioned(
-            bottom: 20,
-            left: -40,
+            bottom: -30,
+            left: -60,
             child: Container(
-              width: 150,
-              height: 150,
+              width: 220,
+              height: 220,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: LinearGradient(
+                gradient: RadialGradient(
                   colors: [
                     AppColors.primaryBlue.withValues(alpha: 0.1),
                     AppColors.white.withValues(alpha: 0.0),
                   ],
-                  begin: Alignment.bottomLeft,
-                  end: Alignment.topRight,
                 ),
               ),
             ),
           ),
 
-          // Main Graphic Container
+          // Concentric decorative rings for a premium tech feel
+          Container(
+            width: 280,
+            height: 280,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.primaryBlue.withValues(alpha: 0.05),
+                width: 2,
+              ),
+            ),
+          ),
+          Container(
+            width: 230,
+            height: 230,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.lightBlue.withValues(alpha: 0.1),
+                width: 1,
+              ),
+            ),
+          ),
+
+          // Main Graphic Container with elastic pop & double shadow
           TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 0.0, end: 1.0),
-            duration: const Duration(milliseconds: 1000),
+            duration: const Duration(milliseconds: 1200),
             curve: Curves.elasticOut,
             builder: (context, value, child) {
               return Transform.scale(
@@ -298,30 +325,46 @@ class _OnboardState extends State<Onboard> {
                 child: Opacity(
                   opacity: value.clamp(0.0, 1.0),
                   child: Container(
-                    padding: const EdgeInsets.all(48),
+                    padding: const EdgeInsets.all(40),
                     decoration: BoxDecoration(
                       color: AppColors.white,
                       shape: BoxShape.circle,
                       boxShadow: [
                         BoxShadow(
-                          color: AppColors.primaryBlue.withValues(alpha: 0.12),
+                          color: AppColors.primaryBlue.withValues(alpha: 0.08),
                           blurRadius: 40,
                           offset: const Offset(0, 20),
                         ),
+                        BoxShadow(
+                          color: AppColors.lightBlue.withValues(alpha: 0.15),
+                          blurRadius: 15,
+                          spreadRadius: 2,
+                        ),
                       ],
                     ),
-                    child: Image.asset(
-                      imagePath,
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.contain,
-                      errorBuilder: (context, error, stackTrace) {
-                        return Icon(
-                          Icons.water_drop_outlined,
-                          size: 100,
-                          color: AppColors.primaryBlue.withValues(alpha: 0.4),
-                        );
-                      },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.splashGradient1.withValues(alpha: 0.3),
+                      ),
+                      child: ClipOval(
+                        child: Image.network(
+                          imagePath,
+                          width: 120,
+                          height: 120,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              Icons.water_drop_outlined,
+                              size: 90,
+                              color: AppColors.primaryBlue.withValues(
+                                alpha: 0.4,
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
                 ),

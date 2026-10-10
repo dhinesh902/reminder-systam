@@ -11,6 +11,13 @@ class AppColors {
   static const Color splashGradient1 = Color(0xFFE1F0FA);
   static const Color splashGradient2 = Color(0xFF0075C4);
   static const Color trustBadgeBg = Color(0xFFF0F7FF);
-  
+  static const Color darkGreen = Color(0xFF00FF00);
+
   static const Color white = Color(0xFFFFFFFF);
+  static const Color darkRed = Color(0xFFFF0000);
+  static const Color orange = Colors.orange;
+  static const Color grey = Colors.grey;
+  static const Color black54 = Colors.black54;
+  static const Color black87 = Colors.black87;
+  static const Color transparent = Colors.transparent;
 }

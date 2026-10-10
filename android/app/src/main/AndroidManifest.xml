@@ -1,6 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Required to make HTTP/HTTPS network requests -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- Optional: Required if you want to check if the device is connected to Wi-Fi or Mobile Data -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
-        android:label="reminder"
+        android:label="RO REMINDER"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
