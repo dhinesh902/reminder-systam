@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reminder/routes/app_routes.dart';
@@ -21,21 +22,21 @@ class _OnboardState extends State<Onboard> {
       "subtitle":
           "Seamlessly monitor your RO system's health, TDS levels, and water flow directly from your corporate dashboard.",
       "image":
-          "https://img.magnific.com/free-vector/tiny-woman-pouring-clean-water-from-faucet-with-mountain-landscape_74855-11024.jpg?semt=ais_hybrid&w=740&q=80",
+          "https://www.hindustantimes.com/ht-img/img/2025/11/17/960x540/Water_purifiers_1763370051411_1763370067595_1763372971234.png",
     },
     {
       "title": "Automated Maintenance",
       "subtitle":
           "Receive intelligent alerts for filter replacements and schedule expert servicing with a single tap.",
       "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYlE31sKIFk9ruqdd6fmXqpemq5kCcwV-fGrbWHUvKgg&s=10",
+          "https://roserviceman.com/wp-content/uploads/2024/03/Ro-Repair-1.jpg",
     },
     {
       "title": "Purity Guaranteed",
       "subtitle":
           "Ensuring the highest standards of water quality for your workspace and family. Health begins with pure water.",
       "image":
-          "https://img.magnific.com/free-vector/event-calendar-notification-freelancer-project-deadline-date-appointment-reminder-calendar-megaphone-isolated-design-element-time-management-concept-illustration_335657-1693.jpg?semt=ais_hybrid&w=740&q=80",
+          "https://livpure.com/cdn/shop/articles/family-spending-time-together-outside_23-2148659464_683a981c-1051-4676-8502-7cb9a7020969-793391.jpg?v=1726726266",
     },
   ];
 
@@ -43,333 +44,316 @@ class _OnboardState extends State<Onboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      body: Column(
+      body: Stack(
         children: [
-          // Dynamic Top Image/Graphic Section
-          Expanded(
-            flex: 11,
-            child: PageView.builder(
-              controller: _pageController,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-              itemCount: _onboardData.length,
-              itemBuilder: (context, index) {
-                return _buildCorporateGraphic(_onboardData[index]["image"]);
-              },
+          // Fixed Background Image
+          Image.asset(
+            AppImages.onboard,
+            fit: BoxFit.cover,
+            width: double.infinity,
+            height: double.infinity,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(color: AppColors.primaryBlue);
+            },
+          ),
+          // Dark gradient overlay for text readability
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  AppColors.transparent,
+                  AppColors.primaryBlue.withValues(alpha: 0.7),
+                  AppColors.primaryBlue.withValues(alpha: 0.95),
+                ],
+                stops: const [0.3, 0.7, 1.0],
+              ),
             ),
           ),
 
-          // Content Section
-          Expanded(
-            flex: 9,
-            child: Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 32.0,
-                vertical: 32.0,
-              ),
-              decoration: BoxDecoration(
-                color: AppColors.white,
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: AppColors.primaryBlue.withValues(alpha: 0.08),
-                    offset: const Offset(0, -10),
-                    blurRadius: 30,
+          // Foreground Content
+          SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // Top Bar with Skip Button
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24.0,
+                    vertical: 16.0,
                   ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  // Page Indicators
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      _onboardData.length,
-                      (index) => _buildDot(index),
-                    ),
-                  ),
-                  const Spacer(),
-                  // Text Content
-                  AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 400),
-                    transitionBuilder:
-                        (Widget child, Animation<double> animation) {
-                          return FadeTransition(
-                            opacity: animation,
-                            child: SlideTransition(
-                              position: Tween<Offset>(
-                                begin: const Offset(0.0, 0.1),
-                                end: Offset.zero,
-                              ).animate(animation),
-                              child: child,
-                            ),
-                          );
-                        },
-                    child: Column(
-                      key: ValueKey<int>(_currentIndex),
-                      children: [
-                        // Stylish Gradient Heading
-                        ShaderMask(
-                          shaderCallback: (bounds) => const LinearGradient(
-                            colors: [
-                              AppColors.primaryBlue,
-                              AppColors.lightBlue,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ).createShader(bounds),
-                          child: Text(
-                            _onboardData[_currentIndex]["title"],
-                            style: const TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.white,
-                              // Required for ShaderMask
-                              letterSpacing: -0.5,
-                              height: 1.2,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          _onboardData[_currentIndex]["subtitle"],
-                          style: const TextStyle(
-                            fontSize: 15,
-                            color: AppColors.textSecondary,
-                            height: 1.6,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-
-                  // Bottom Actions
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      TextButton(
-                        onPressed: () => context.go(AppRoutes.login),
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.textSecondary,
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        child: const Text("Skip"),
-                      ),
-
-                      // Stylish Animated Next/Get Started Button
                       GestureDetector(
-                        onTap: () {
-                          if (_currentIndex == _onboardData.length - 1) {
-                            context.go(AppRoutes.login);
-                          } else {
-                            _pageController.nextPage(
-                              duration: const Duration(milliseconds: 600),
-                              curve: Curves.fastOutSlowIn,
-                            );
-                          }
-                        },
-                        child: AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          width: _currentIndex == _onboardData.length - 1
-                              ? 160
-                              : 64,
-                          height: 64,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [
-                                AppColors.primaryBlue,
-                                AppColors.lightBlue,
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(32),
-                            boxShadow: [
-                              BoxShadow(
-                                color: AppColors.primaryBlue.withValues(
-                                  alpha: 0.3,
-                                ),
-                                blurRadius: 20,
-                                offset: const Offset(0, 8),
+                        onTap: () => context.go(AppRoutes.login),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 8,
                               ),
-                            ],
-                          ),
-                          child: Center(
-                            child: _currentIndex == _onboardData.length - 1
-                                ? const Text(
-                                    "Get Started",
-                                    style: TextStyle(
-                                      color: AppColors.white,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      letterSpacing: 0.5,
-                                    ),
-                                  )
-                                : const Icon(
-                                    Icons.arrow_forward_rounded,
-                                    color: AppColors.white,
-                                    size: 28,
-                                  ),
+                              decoration: BoxDecoration(
+                                color: AppColors.white.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: AppColors.white.withValues(alpha: 0.3),
+                                ),
+                              ),
+                              child: const Text(
+                                "Skip",
+                                style: TextStyle(
+                                  color: AppColors.white,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCorporateGraphic(String imagePath) {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            AppColors.lightBlue.withValues(alpha: 0.01),
-            AppColors.lightBlue.withValues(alpha: 0.01),
-          ],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-        ),
-      ),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          // Elegant Radial Background Glows
-          Positioned(
-            top: -50,
-            right: -50,
-            child: Container(
-              width: 250,
-              height: 250,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.splashGradient2.withValues(alpha: 0.15),
-                    AppColors.white.withValues(alpha: 0.0),
-                  ],
                 ),
-              ),
-            ),
-          ),
-          Positioned(
-            bottom: -30,
-            left: -60,
-            child: Container(
-              width: 220,
-              height: 220,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    AppColors.primaryBlue.withValues(alpha: 0.1),
-                    AppColors.white.withValues(alpha: 0.0),
-                  ],
+
+                // PageView for Graphic Vectors
+                Expanded(
+                  child: PageView.builder(
+                    controller: _pageController,
+                    onPageChanged: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                    itemCount: _onboardData.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Graphic Vector Image
+                            TweenAnimationBuilder<double>(
+                              tween: Tween<double>(begin: 0.8, end: 1.0),
+                              duration: const Duration(milliseconds: 600),
+                              curve: Curves.easeOutBack,
+                              builder: (context, value, child) {
+                                return Transform.scale(
+                                  scale: value,
+                                  child: Container(
+                                    padding: const EdgeInsets.all(16),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.white.withValues(
+                                        alpha: 0.1,
+                                      ),
+                                      border: Border.all(
+                                        color: AppColors.white.withValues(
+                                          alpha: 0.2,
+                                        ),
+                                        width: 2,
+                                      ),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors.primaryBlue
+                                              .withValues(alpha: 0.3),
+                                          blurRadius: 30,
+                                          spreadRadius: 5,
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        _onboardData[index]["image"],
+                                        width: 220,
+                                        height: 220,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                              return Container(
+                                                width: 220,
+                                                height: 220,
+                                                color: AppColors.white
+                                                    .withValues(alpha: 0.2),
+                                                child: const Icon(
+                                                  Icons.water_drop_rounded,
+                                                  size: 80,
+                                                  color: AppColors.white,
+                                                ),
+                                              );
+                                            },
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-            ),
-          ),
 
-          // Concentric decorative rings for a premium tech feel
-          Container(
-            width: 280,
-            height: 280,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.primaryBlue.withValues(alpha: 0.05),
-                width: 2,
-              ),
-            ),
-          ),
-          Container(
-            width: 230,
-            height: 230,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: AppColors.lightBlue.withValues(alpha: 0.1),
-                width: 1,
-              ),
-            ),
-          ),
-
-          // Main Graphic Container with elastic pop & double shadow
-          TweenAnimationBuilder<double>(
-            tween: Tween<double>(begin: 0.0, end: 1.0),
-            duration: const Duration(milliseconds: 1200),
-            curve: Curves.elasticOut,
-            builder: (context, value, child) {
-              return Transform.scale(
-                scale: 0.8 + (0.2 * value),
-                child: Opacity(
-                  opacity: value.clamp(0.0, 1.0),
-                  child: Container(
-                    padding: const EdgeInsets.all(40),
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primaryBlue.withValues(alpha: 0.08),
-                          blurRadius: 40,
-                          offset: const Offset(0, 20),
+                // Bottom Glassmorphism Card
+                Padding(
+                  padding: const EdgeInsets.all(24.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(36),
+                    child: BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+                      child: Container(
+                        padding: const EdgeInsets.all(32),
+                        decoration: BoxDecoration(
+                          color: AppColors.white.withValues(alpha: 0.1),
+                          borderRadius: BorderRadius.circular(36),
+                          border: Border.all(
+                            color: AppColors.white.withValues(alpha: 0.2),
+                            width: 1.5,
+                          ),
                         ),
-                        BoxShadow(
-                          color: AppColors.lightBlue.withValues(alpha: 0.15),
-                          blurRadius: 15,
-                          spreadRadius: 2,
-                        ),
-                      ],
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.splashGradient1.withValues(alpha: 0.3),
-                      ),
-                      child: ClipOval(
-                        child: Image.network(
-                          imagePath,
-                          width: 120,
-                          height: 120,
-                          fit: BoxFit.cover,
-                          errorBuilder: (context, error, stackTrace) {
-                            return Icon(
-                              Icons.water_drop_outlined,
-                              size: 90,
-                              color: AppColors.primaryBlue.withValues(
-                                alpha: 0.4,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            // Text Content (AnimatedSwitcher)
+                            AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 500),
+                              transitionBuilder:
+                                  (Widget child, Animation<double> animation) {
+                                    return FadeTransition(
+                                      opacity: animation,
+                                      child: SlideTransition(
+                                        position: Tween<Offset>(
+                                          begin: const Offset(0.0, 0.2),
+                                          end: Offset.zero,
+                                        ).animate(animation),
+                                        child: child,
+                                      ),
+                                    );
+                                  },
+                              child: Column(
+                                key: ValueKey<int>(_currentIndex),
+                                children: [
+                                  Text(
+                                    _onboardData[_currentIndex]["title"],
+                                    style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.w800,
+                                      color: AppColors.white,
+                                      letterSpacing: 0.5,
+                                      height: 1.2,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Text(
+                                    _onboardData[_currentIndex]["subtitle"],
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: AppColors.white.withValues(
+                                        alpha: 0.85,
+                                      ),
+                                      height: 1.6,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
-                            );
-                          },
+                            ),
+                            const SizedBox(height: 40),
+
+                            // Indicators and Action Button
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                // Page Indicators
+                                Row(
+                                  children: List.generate(
+                                    _onboardData.length,
+                                    (index) => _buildDot(index),
+                                  ),
+                                ),
+
+                                // Next / Get Started Button
+                                GestureDetector(
+                                  onTap: () {
+                                    if (_currentIndex ==
+                                        _onboardData.length - 1) {
+                                      context.go(AppRoutes.login);
+                                    } else {
+                                      _pageController.nextPage(
+                                        duration: const Duration(
+                                          milliseconds: 600,
+                                        ),
+                                        curve: Curves.fastOutSlowIn,
+                                      );
+                                    }
+                                  },
+                                  child: AnimatedContainer(
+                                    duration: const Duration(milliseconds: 300),
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal:
+                                          _currentIndex ==
+                                              _onboardData.length - 1
+                                          ? 24
+                                          : 16,
+                                      vertical: 16,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.white,
+                                      borderRadius: BorderRadius.circular(32),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: AppColors.white.withValues(
+                                            alpha: 0.2,
+                                          ),
+                                          blurRadius: 15,
+                                          offset: const Offset(0, 5),
+                                        ),
+                                      ],
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        if (_currentIndex ==
+                                            _onboardData.length - 1)
+                                          const Padding(
+                                            padding: EdgeInsets.only(
+                                              right: 8.0,
+                                            ),
+                                            child: Text(
+                                              "Get Started",
+                                              style: TextStyle(
+                                                color: AppColors.primaryBlue,
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                        const Icon(
+                                          Icons.arrow_forward_rounded,
+                                          color: AppColors.primaryBlue,
+                                          size: 24,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
                 ),
-              );
-            },
+              ],
+            ),
           ),
         ],
       ),
@@ -385,12 +369,9 @@ class _OnboardState extends State<Onboard> {
       height: 8,
       width: isActive ? 32 : 8,
       decoration: BoxDecoration(
-        gradient: isActive
-            ? const LinearGradient(
-                colors: [AppColors.primaryBlue, AppColors.lightBlue],
-              )
-            : null,
-        color: isActive ? null : AppColors.inputBorder,
+        color: isActive
+            ? AppColors.white
+            : AppColors.white.withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(4),
       ),
     );

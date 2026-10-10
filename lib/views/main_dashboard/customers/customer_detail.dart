@@ -784,12 +784,12 @@ class FollowupCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: AppColors.primaryBlue.withValues(alpha: 0.05),
+            blurRadius: 15,
+            offset: const Offset(0, 6),
           ),
         ],
       ),
@@ -799,11 +799,14 @@ class FollowupCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.blue.withValues(alpha: 0.1),
+              color: AppColors.primaryBlue.withValues(alpha: 0.08),
               shape: BoxShape.circle,
+              border: Border.all(
+                color: AppColors.primaryBlue.withValues(alpha: 0.15),
+              ),
             ),
             child: const Icon(
-              Icons.support_agent,
+              Icons.support_agent_rounded,
               color: AppColors.primaryBlue,
               size: 24,
             ),
@@ -816,23 +819,27 @@ class FollowupCard extends StatelessWidget {
                 Text(
                   'Follow-up: $type',
                   style: const TextStyle(
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w800,
                     fontSize: 15,
                     color: AppColors.textPrimary,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 6),
                 Row(
                   children: [
                     const Icon(
-                      Icons.calendar_today,
-                      size: 12,
-                      color: Colors.grey,
+                      Icons.calendar_today_rounded,
+                      size: 13,
+                      color: AppColors.textSecondary,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 6),
                     Text(
                       '$date at $time',
-                      style: const TextStyle(fontSize: 11, color: Colors.grey),
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ],
                 ),
@@ -845,7 +852,7 @@ class FollowupCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
-                  vertical: 4,
+                  vertical: 5,
                 ),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.1),
@@ -855,13 +862,14 @@ class FollowupCard extends StatelessWidget {
                   status,
                   style: TextStyle(
                     color: statusColor,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 0.2,
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              Icon(Icons.chevron_right, size: 20, color: Colors.grey.shade400),
+              const SizedBox(height: 12),
+              Icon(Icons.chevron_right_rounded, size: 20, color: Colors.grey.shade400),
             ],
           ),
         ],

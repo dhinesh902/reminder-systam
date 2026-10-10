@@ -48,12 +48,7 @@ class Followups extends StatelessWidget {
                         itemBuilder: (context, index) {
                           return GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const Products(),
-                                ),
-                              );
+                              context.push(AppRoutes.followupDetails);
                             },
                             child: const FollowupCard(
                               name: 'Rahul Sharma',
@@ -61,7 +56,6 @@ class Followups extends StatelessWidget {
                               status: 'Scheduled',
                               statusColor: Colors.teal,
                               statusBg: Color(0x19009688),
-                              // Colors.teal.withOpacity(0.1)
                               date: 'Today, 10:00 AM',
                               serviceType: 'Service Check',
                               initials: 'RS',
@@ -227,15 +221,15 @@ class FollowupCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: AppColors.primaryBlue.withValues(alpha: 0.06),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -245,13 +239,14 @@ class FollowupCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 46,
-                height: 46,
+                width: 52,
+                height: 52,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
+                  color: AppColors.primaryBlue.withValues(alpha: 0.08),
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: AppColors.primaryBlue.withValues(alpha: 0.1),
+                    color: AppColors.primaryBlue.withValues(alpha: 0.15),
+                    width: 1,
                   ),
                 ),
                 child: Center(
@@ -259,8 +254,8 @@ class FollowupCard extends StatelessWidget {
                     initials,
                     style: const TextStyle(
                       color: AppColors.primaryBlue,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontWeight: FontWeight.w900,
+                      fontSize: 18,
                     ),
                   ),
                 ),
@@ -272,6 +267,7 @@ class FollowupCard extends StatelessWidget {
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: Text(
@@ -279,68 +275,70 @@ class FollowupCard extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w800,
-                              color: AppColors.primaryBlue,
+                              color: AppColors.textPrimary,
                             ),
                             overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                           ),
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
-                            vertical: 4,
+                            vertical: 5,
                           ),
                           decoration: BoxDecoration(
                             color: statusBg,
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                           child: Text(
                             status,
                             style: TextStyle(
                               color: statusColor,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.2,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 4),
                     Row(
                       children: [
                         const Icon(
                           Icons.phone_android_rounded,
-                          size: 13,
-                          color: AppColors.orange,
+                          size: 14,
+                          color: AppColors.textSecondary,
                         ),
-                        const SizedBox(width: 4),
+                        const SizedBox(width: 6),
                         Text(
                           phone,
                           style: const TextStyle(
-                            fontSize: 12,
+                            fontSize: 13,
                             fontWeight: FontWeight.w600,
-                            color: AppColors.orange,
+                            color: AppColors.textSecondary,
                           ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
                           children: [
                             const Icon(
-                              Icons.calendar_today_outlined,
-                              size: 13,
-                              color: Colors.grey,
+                              Icons.calendar_today_rounded,
+                              size: 14,
+                              color: Colors.blueAccent,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: 6),
                             Text(
                               date,
                               style: const TextStyle(
                                 fontSize: 12,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w500,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -348,17 +346,17 @@ class FollowupCard extends StatelessWidget {
                         Row(
                           children: [
                             const Icon(
-                              Icons.build_outlined,
-                              size: 13,
-                              color: Colors.grey,
+                              Icons.build_circle_rounded,
+                              size: 15,
+                              color: Colors.orange,
                             ),
-                            const SizedBox(width: 4),
+                            const SizedBox(width: 6),
                             Text(
                               serviceType,
                               style: const TextStyle(
                                 fontSize: 12,
-                                color: Colors.black54,
-                                fontWeight: FontWeight.w500,
+                                color: AppColors.textSecondary,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                           ],
@@ -371,37 +369,37 @@ class FollowupCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 16),
-          Divider(height: 1, color: Colors.grey.shade200),
-          const SizedBox(height: 12),
+          Divider(height: 1, color: Colors.grey.withValues(alpha: 0.15)),
+          const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
                 child: GestureDetector(
                   onTap: () => openCall(phone),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                      color: Colors.blue.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.blue.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: Colors.blue.withValues(alpha: 0.2),
+                        color: Colors.blue.withValues(alpha: 0.15),
                       ),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const [
                         Icon(
-                          Icons.call,
+                          Icons.call_rounded,
                           color: AppColors.primaryBlue,
-                          size: 16,
+                          size: 18,
                         ),
-                        SizedBox(width: 6),
+                        SizedBox(width: 8),
                         Text(
                           'Call',
                           style: TextStyle(
                             color: AppColors.primaryBlue,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],
@@ -414,12 +412,12 @@ class FollowupCard extends StatelessWidget {
                 child: GestureDetector(
                   onTap: () => openWhatsApp(phone),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 12),
                     decoration: BoxDecoration(
-                      color: Colors.green.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.green.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: Colors.green.withValues(alpha: 0.2),
+                        color: Colors.green.withValues(alpha: 0.15),
                       ),
                     ),
                     child: Row(
@@ -427,16 +425,16 @@ class FollowupCard extends StatelessWidget {
                       children: [
                         Image.network(
                           "https://cdn-icons-png.flaticon.com/128/3670/3670051.png",
-                          height: 16,
-                          width: 16,
+                          height: 18,
+                          width: 18,
                         ),
-                        const SizedBox(width: 6),
+                        const SizedBox(width: 8),
                         const Text(
                           'WhatsApp',
                           style: TextStyle(
                             color: Colors.green,
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w700,
                           ),
                         ),
                       ],

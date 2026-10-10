@@ -5,6 +5,7 @@ import 'package:reminder/routes/app_routes.dart';
 import 'package:reminder/widgets/custom_dialogues.dart';
 import 'package:reminder/widgets/add_button.dart';
 import 'package:reminder/widgets/custom_search_bar.dart';
+import 'package:reminder/widgets/custom_popup_menu.dart';
 
 class Services extends StatelessWidget {
   const Services({super.key});
@@ -43,42 +44,48 @@ class Services extends StatelessWidget {
                         children: const [
                           ServiceCard(
                             title: 'RO Installation',
-                            description: 'Complete installation of RO system with all necessary fittings and setup.',
+                            description:
+                                'Complete installation of RO system with all necessary fittings and setup.',
                             duration: '1 - 2 Hours',
                             price: '1,500.00',
                             icon: Icons.build,
                           ),
                           ServiceCard(
                             title: 'Annual Maintenance',
-                            description: 'Periodic cleaning and performance check to ensure better water quality.',
+                            description:
+                                'Periodic cleaning and performance check to ensure better water quality.',
                             duration: '1 Hour',
                             price: '1,000.00',
                             icon: Icons.settings,
                           ),
                           ServiceCard(
                             title: 'Filter Replacement',
-                            description: 'Replace all filters for optimal performance and pure water.',
+                            description:
+                                'Replace all filters for optimal performance and pure water.',
                             duration: '1 Hour',
                             price: '800.00',
                             icon: Icons.sync,
                           ),
                           ServiceCard(
                             title: 'RO Repair',
-                            description: 'Fixing leakage, low pressure or other technical issues in RO system.',
+                            description:
+                                'Fixing leakage, low pressure or other technical issues in RO system.',
                             duration: '1 - 2 Hours',
                             price: '1,200.00',
                             icon: Icons.handyman,
                           ),
                           ServiceCard(
                             title: 'Tank Cleaning',
-                            description: 'Cleaning and sanitizing water tank for safe and healthy water.',
+                            description:
+                                'Cleaning and sanitizing water tank for safe and healthy water.',
                             duration: '1 Hour',
                             price: '600.00',
                             icon: Icons.cleaning_services,
                           ),
                           ServiceCard(
                             title: 'AMC (Annual Maintenance Contract)',
-                            description: 'Yearly service plan with free visits and priority support.',
+                            description:
+                                'Yearly service plan with free visits and priority support.',
                             duration: '1 Year',
                             price: '2,500.00',
                             icon: Icons.verified_user,
@@ -117,9 +124,9 @@ class ServiceHeader extends StatelessWidget {
         children: [
           Row(
             children: [
-              GestureDetector(
-                onTap: () => context.pop(),
-                child: const Icon(Icons.arrow_back, color: AppColors.white),
+              Image.network(
+                "https://cdn-icons-png.flaticon.com/128/12263/12263199.png",
+                height: 24,
               ),
               const SizedBox(width: 16),
               const Text(
@@ -131,11 +138,6 @@ class ServiceHeader extends StatelessWidget {
                 ),
               ),
             ],
-          ),
-          const Icon(
-            Icons.filter_alt,
-            color: AppColors.white,
-            size: 26,
           ),
         ],
       ),
@@ -272,41 +274,53 @@ class ServiceCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           title,
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryBlue,
+                          ),
                         ),
                       ),
-                      PopupMenuButton<String>(
-                        icon: const Icon(Icons.more_vert, color: Colors.blueGrey, size: 18),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onSelected: (value) {
-                          if (value == 'delete') {
-                            CustomDialogues.showDeleteConfirmationDialog(
-                              context,
-                              title: 'Delete Service',
-                              content: 'Are you sure you want to delete this service? This action cannot be undone.',
-                              onConfirm: () {},
-                            );
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                          const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
-                        ],
+                      CustomPopupMenu(
+                        deleteTitle: 'Delete Service',
+                        deleteContent: 'Are you sure you want to delete this service? This action cannot be undone.',
+                        onEdit: () {},
+                        onDelete: () {},
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(description, style: const TextStyle(fontSize: 12, color: Colors.black54, height: 1.4)),
+                  Text(
+                    description,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.black54,
+                      height: 1.4,
+                    ),
+                  ),
                   const SizedBox(height: 12),
                   Row(
                     children: [
-                      const Icon(Icons.access_time, size: 14, color: Colors.blueGrey),
+                      const Icon(
+                        Icons.access_time,
+                        size: 14,
+                        color: Colors.blueGrey,
+                      ),
                       const SizedBox(width: 4),
-                      Text(duration, style: const TextStyle(fontSize: 11, color: Colors.blueGrey, fontWeight: FontWeight.w500)),
+                      Text(
+                        duration,
+                        style: const TextStyle(
+                          fontSize: 11,
+                          color: Colors.blueGrey,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                       const SizedBox(width: 16),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFEAF2FF),
                           borderRadius: BorderRadius.circular(4),
@@ -314,9 +328,20 @@ class ServiceCard extends StatelessWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(Icons.sell, size: 10, color: AppColors.primaryBlue),
+                            const Icon(
+                              Icons.sell,
+                              size: 10,
+                              color: AppColors.primaryBlue,
+                            ),
                             const SizedBox(width: 4),
-                            Text('₹ $price', style: const TextStyle(color: AppColors.primaryBlue, fontSize: 11, fontWeight: FontWeight.bold)),
+                            Text(
+                              '₹ $price',
+                              style: const TextStyle(
+                                color: AppColors.primaryBlue,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
                       ),

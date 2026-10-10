@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reminder/utils/constants/colors.dart';
+import 'package:reminder/widgets/premium_sliver_app_bar.dart';
 
 class ProductDetail extends StatelessWidget {
   const ProductDetail({super.key});
@@ -8,25 +9,26 @@ class ProductDetail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-          backgroundColor: AppColors.primaryBlue,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => context.pop(),
-          ),
-          title: const Text(
-            'Product Detail',
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
-          ),
-        ),
-        body: Column(
-          children: [
-            // Header Section
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
+      backgroundColor: const Color(0xFFF4F7FC),
+      appBar: const PremiumSliverAppBar(title: "Product Detail"),
+      body: Column(
+        children: [
+          // Header Section
+          Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primaryBlue.withValues(alpha: 0.05),
+                  blurRadius: 20,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
@@ -90,7 +92,6 @@ class ProductDetail extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(height: 1, color: Color(0xFFEEEEEE)),
             Expanded(
               child: _buildDetailsTab(),
             ),
@@ -101,17 +102,18 @@ class ProductDetail extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: ElevatedButton.icon(
               onPressed: () {},
-              icon: const Icon(Icons.edit, color: Colors.white, size: 18),
+              icon: const Icon(Icons.edit, color: Colors.white, size: 20),
               label: const Text('Edit Product', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                elevation: 0,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                elevation: 4,
+                shadowColor: AppColors.primaryBlue.withValues(alpha: 0.4),
               ),
             ),
           ),
-      ),
+        ),
     );
   }
 
@@ -187,19 +189,26 @@ class ProductDetail extends StatelessWidget {
 
   Widget _buildInfoCard({required String title, required IconData icon, required Widget child}) {
     return Container(
+      margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryBlue.withValues(alpha: 0.04),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF0F5FA),
-              borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            decoration: BoxDecoration(
+              color: AppColors.primaryBlue.withValues(alpha: 0.03),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             ),
             child: Row(
               children: [

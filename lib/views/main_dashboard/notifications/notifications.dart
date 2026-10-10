@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:reminder/utils/constants/colors.dart';
 import 'package:go_router/go_router.dart';
+import 'package:reminder/widgets/premium_sliver_app_bar.dart';
 
 class Notifications extends StatelessWidget {
   const Notifications({super.key});
@@ -8,53 +9,65 @@ class Notifications extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F7FC),
-      appBar: AppBar(
-        backgroundColor: AppColors.primaryBlue,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.white),
-          onPressed: () => context.pop(),
-        ),
-        title: const Text(
-          'Notifications',
-          style: TextStyle(
-            color: AppColors.white,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        centerTitle: true,
-      ),
+      backgroundColor: AppColors.inputBackground,
+      appBar: const PremiumSliverAppBar(title: 'Notifications'),
       body: ListView(
-        padding: const EdgeInsets.all(20),
         physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         children: [
-          NotificationCard(
+          const _DateHeader(title: 'TODAY'),
+          const NotificationCard(
             title: 'Filter Replacement Due',
-            message: 'Rahul Sharma\'s RO filter replacement is due today.',
+            message:
+                'Rahul Sharma\'s RO filter replacement is due today.',
             time: '10 mins ago',
-            icon: Icons.water_drop,
+            icon: Icons.water_drop_rounded,
             color: Colors.blue,
             isNew: true,
           ),
-          NotificationCard(
+          const NotificationCard(
             title: 'Payment Received',
-            message: 'Payment of ₹1,500 received from Priya Singh for routine service.',
+            message:
+                'Payment of ₹1,500 received from Priya Singh for routine service.',
             time: '2 hours ago',
-            icon: Icons.currency_rupee,
+            icon: Icons.currency_rupee_rounded,
             color: Colors.green,
             isNew: true,
           ),
-          NotificationCard(
+          const SizedBox(height: 16),
+          const _DateHeader(title: 'YESTERDAY'),
+          const NotificationCard(
             title: 'New Service Request',
-            message: 'Neha Verma has requested a new RO installation.',
+            message:
+                'Neha Verma has requested a new RO installation at her office.',
             time: 'Yesterday, 04:00 PM',
-            icon: Icons.build,
+            icon: Icons.build_circle_rounded,
             color: Colors.orange,
             isNew: false,
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _DateHeader extends StatelessWidget {
+  final String title;
+
+  const _DateHeader({required this.title});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 16, left: 4),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w800,
+          color: AppColors.textSecondary,
+          letterSpacing: 1.0,
+        ),
       ),
     );
   }
@@ -82,29 +95,34 @@ class NotificationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: isNew ? Colors.white : const Color(0xFFFAFAFA),
-        borderRadius: BorderRadius.circular(20),
+        color: isNew ? color.withValues(alpha: 0.03) : AppColors.white,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(
+          color: isNew ? color.withValues(alpha: 0.2) : Colors.white,
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: isNew
+                ? color.withValues(alpha: 0.08)
+                : Colors.black.withValues(alpha: 0.03),
+            blurRadius: 20,
+            offset: const Offset(0, 8),
           ),
         ],
-        border: isNew ? Border.all(color: color.withOpacity(0.3), width: 1) : null,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
+              color: color.withValues(alpha: 0.12),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: color, size: 24),
+            child: Icon(icon, color: color, size: 26),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -112,25 +130,36 @@ class NotificationCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: isNew ? FontWeight.w800 : FontWeight.w600,
-                        color: AppColors.primaryBlue,
+                    Expanded(
+                      child: Text(
+                        title,
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: isNew ? FontWeight.w800 : FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                     ),
-                    if (isNew)
+                    if (isNew) ...[
+                      const SizedBox(width: 8),
                       Container(
                         width: 8,
                         height: 8,
-                        decoration: const BoxDecoration(
-                          color: Colors.redAccent,
+                        margin: const EdgeInsets.only(top: 6),
+                        decoration: BoxDecoration(
+                          color: color,
                           shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: color.withValues(alpha: 0.4),
+                              blurRadius: 4,
+                            ),
+                          ],
                         ),
                       ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 6),
@@ -138,18 +167,29 @@ class NotificationCard extends StatelessWidget {
                   message,
                   style: TextStyle(
                     fontSize: 13,
-                    color: Colors.black.withOpacity(0.7),
+                    color: AppColors.textSecondary,
                     height: 1.4,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  time,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    color: Colors.grey,
                     fontWeight: FontWeight.w500,
                   ),
+                ),
+                const SizedBox(height: 12),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time_rounded,
+                      size: 14,
+                      color: Colors.black.withValues(alpha: 0.3),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      time,
+                      style: TextStyle(
+                        fontSize: 11,
+                        color: Colors.black.withValues(alpha: 0.4),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

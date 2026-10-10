@@ -1,9 +1,10 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:reminder/routes/app_routes.dart';
 import 'package:reminder/utils/constants/colors.dart';
 import 'package:reminder/utils/constants/images.dart';
-import 'package:reminder/views/main_dashboard/customers/customer_detail.dart';
+import 'package:reminder/views/main_dashboard/followups/follwups.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -23,19 +24,19 @@ class _DashboardState extends State<Dashboard> {
     QuickActionModel(
       icon: "https://cdn-icons-png.flaticon.com/128/10608/10608883.png",
       title: 'Add Product',
-      color: Colors.purpleAccent,
+      color: Colors.blue,
       path: AppRoutes.addProduct,
     ),
     QuickActionModel(
       icon: "https://cdn-icons-png.flaticon.com/128/18511/18511190.png",
       title: 'Add Service',
-      color: Colors.deepPurpleAccent,
+      color: Colors.teal,
       path: AppRoutes.addService,
     ),
     QuickActionModel(
       icon: "https://cdn-icons-png.flaticon.com/128/11066/11066109.png",
       title: 'Add Invoice',
-      color: Colors.blue,
+      color: Colors.indigo,
       path: AppRoutes.addInvoice,
     ),
     QuickActionModel(
@@ -46,14 +47,14 @@ class _DashboardState extends State<Dashboard> {
     ),
     QuickActionModel(
       icon: "https://cdn-icons-png.flaticon.com/128/10608/10608883.png",
-      title: 'Add Customer Product',
+      title: 'Customer Product',
       color: Colors.cyan,
       path: AppRoutes.addCustomerProduct,
     ),
     QuickActionModel(
-      icon: "https://cdn-icons-png.flaticon.com/128/11066/11066109.png",
-      title: 'Add Service History',
-      color: Colors.pink,
+      icon: "https://cdn-icons-png.flaticon.com/128/16868/16868714.png",
+      title: 'Service History',
+      color: Colors.purple,
       path: AppRoutes.addServiceHistory,
     ),
     QuickActionModel(
@@ -61,6 +62,12 @@ class _DashboardState extends State<Dashboard> {
       title: 'Products',
       color: Colors.deepOrange,
       path: AppRoutes.products,
+    ),
+    QuickActionModel(
+      icon: "https://cdn-icons-png.flaticon.com/128/9640/9640038.png",
+      title: 'Invoices',
+      color: Colors.amber,
+      path: AppRoutes.invoices,
     ),
   ];
 
@@ -72,101 +79,117 @@ class _DashboardState extends State<Dashboard> {
         slivers: [
           SliverAppBar(
             pinned: true,
-            expandedHeight: 250,
-            toolbarHeight: 70,
+            expandedHeight: 280,
+            toolbarHeight: 80,
             backgroundColor: AppColors.primaryBlue,
             shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(bottom: Radius.circular(30)),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(40)),
             ),
-            titleSpacing: 16,
+            titleSpacing: 20,
             title: Row(
               children: [
                 Container(
-                  width: 40,
-                  height: 40,
-                  decoration: const BoxDecoration(
+                  width: 48,
+                  height: 48,
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: AppColors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.1),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
                   ),
                   clipBehavior: Clip.antiAlias,
-                  child: Image.asset(AppImages.roLogo),
+                  child: Image.asset(AppImages.roLogo, fit: BoxFit.cover),
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 14),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
-                      Text(
+                    children: [
+                      const Text(
                         'RO Water',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
                         ),
                       ),
                       Text(
                         'Reminders & Services',
-                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                        style: TextStyle(
+                          color: Colors.white.withValues(alpha: 0.8),
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                GestureDetector(
+                GlassIconButton(
+                  icon: "https://cdn-icons-png.flaticon.com/128/8509/8509651.png",
                   onTap: () {
                     context.push(AppRoutes.notifications);
                   },
-                  child: Container(
-                    height: 40,
-                    width: 40,
-                    clipBehavior: Clip.antiAlias,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: AppColors.white,
-                    ),
-                    padding: EdgeInsets.all(10),
-                    child: Image.network(
-                      "https://cdn-icons-png.flaticon.com/128/18421/18421884.png",
-                    ),
-                  ),
-                ),
-                SizedBox(width: 10),
-                Container(
-                  height: 40,
-                  width: 40,
-                  clipBehavior: Clip.antiAlias,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: AppColors.white,
-                  ),
-                  padding: EdgeInsets.all(10),
-                  child: Image.network(
-                    "https://cdn-icons-png.flaticon.com/128/1077/1077012.png",
-                  ),
                 ),
               ],
             ),
             flexibleSpace: FlexibleSpaceBar(
               background: Stack(
+                clipBehavior: Clip.none,
                 children: [
                   Container(
-                    height: 200,
+                    height: 240,
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30),
-                        bottomRight: Radius.circular(30),
+                        bottomLeft: Radius.circular(40),
+                        bottomRight: Radius.circular(40),
                       ),
                       gradient: LinearGradient(
-                        colors: [AppColors.primaryBlue, AppColors.textPrimary],
+                        colors: [AppColors.primaryBlue, AppColors.lightBlue],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
                     ),
+                    child: Stack(
+                      children: [
+                        // Decorative circles for premium feel
+                        Positioned(
+                          top: -40,
+                          right: -30,
+                          child: Container(
+                            width: 160,
+                            height: 160,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.1),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          bottom: -20,
+                          left: -20,
+                          child: Container(
+                            width: 120,
+                            height: 120,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white.withValues(alpha: 0.1),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   const Positioned(
-                    top: 120,
-                    left: 16,
-                    right: 16,
+                    top: 130,
+                    left: 20,
+                    right: 20,
                     child: HeroBanner(),
                   ),
                 ],
@@ -175,18 +198,19 @@ class _DashboardState extends State<Dashboard> {
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(15, 10, 15, 110),
+              padding: const EdgeInsets.fromLTRB(20, 15, 20, 110),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Top Stats Grid
                   GridView.count(
                     crossAxisCount: 2,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    crossAxisSpacing: 12,
-                    mainAxisSpacing: 12,
-                    childAspectRatio: 1.25,
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    crossAxisSpacing: 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: 1.15,
+                    padding: const EdgeInsets.symmetric(vertical: 20),
                     children: const [
                       TopStatCard(
                         title: 'Total Customers',
@@ -222,30 +246,36 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ],
                   ),
-                  RevenueCard(),
-                  SizedBox(height: 16),
-                  InvoiceStatsCard(),
-                  SizedBox(height: 16),
+
+                  // Revenue & Invoice Stats
+                  const RevenueCard(),
+                  const SizedBox(height: 16),
+                  const InvoiceStatsCard(),
+                  const SizedBox(height: 30),
+
+                  // Quick Actions
                   const Text(
                     'Quick Actions',
                     style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
                       color: AppColors.textPrimary,
+                      letterSpacing: 0.2,
                     ),
                   ),
+                  const SizedBox(height: 4),
                   GridView.builder(
                     shrinkWrap: true,
                     itemCount: quickActions.length,
                     physics: const NeverScrollableScrollPhysics(),
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 1.1,
-                    ),
-
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 1,
+                        ),
                     itemBuilder: (context, index) {
                       return QuickActionCard(
                         icon: quickActions[index].icon,
@@ -258,9 +288,11 @@ class _DashboardState extends State<Dashboard> {
                     },
                   ),
                   const SizedBox(height: 24),
-                  HeaderCard(
+
+                  // Followups
+                  const HeaderCard(
                     title: 'Upcoming Followups',
-                    icon: Icons.calendar_month,
+                    icon: Icons.calendar_month_rounded,
                     iconColor: Colors.blue,
                   ),
                   const SizedBox(height: 16),
@@ -270,23 +302,24 @@ class _DashboardState extends State<Dashboard> {
                     itemCount: 2,
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
-                      return UpcomingListItem(
-                        name: 'Priya Sharma',
-                        desc: 'Service Followup',
-                        dateTime: '17 Apr 2025 • 02:00 PM',
-                        status: 'Pending',
-                        statusColor: Colors.orange,
-                        initials: 'PS',
-                        avatarBg: AppColors.inputBackground,
-                        avatarColor: Colors.redAccent,
+                      return const FollowupCard(
+                        name: 'Rahul Sharma',
+                        phone: '+91 98765 43210',
+                        status: 'Scheduled',
+                        statusColor: Colors.teal,
+                        statusBg: Color(0x19009688),
+                        date: 'Today, 10:00 AM',
+                        serviceType: 'Service Check',
+                        initials: 'RS',
                       );
                     },
                   ),
+                  const SizedBox(height: 24),
 
-                  const SizedBox(height: 16),
-                  HeaderCard(
+                  // Services
+                  const HeaderCard(
                     title: 'Upcoming Services',
-                    icon: Icons.build,
+                    icon: Icons.build_circle_rounded,
                     iconColor: Colors.purple,
                   ),
                   const SizedBox(height: 16),
@@ -296,15 +329,15 @@ class _DashboardState extends State<Dashboard> {
                     itemCount: 2,
                     padding: EdgeInsets.zero,
                     itemBuilder: (context, index) {
-                      return UpcomingListItem(
-                        name: 'Sunita Devi',
-                        desc: 'UV Lamp Replacement',
-                        dateTime: '20 Apr 2025 • 10:00 AM',
+                      return const FollowupCard(
+                        name: 'Rahul Sharma',
+                        phone: '+91 98765 43210',
                         status: 'Scheduled',
-                        statusColor: Colors.blue,
-                        initials: 'SD',
-                        avatarBg: AppColors.inputBorder,
-                        avatarColor: Colors.purple,
+                        statusColor: Colors.teal,
+                        statusBg: Color(0x19009688),
+                        date: 'Today, 10:00 AM',
+                        serviceType: 'Service Check',
+                        initials: 'RS',
                       );
                     },
                   ),
@@ -318,16 +351,55 @@ class _DashboardState extends State<Dashboard> {
   }
 }
 
+class GlassIconButton extends StatelessWidget {
+  final String icon;
+  final VoidCallback onTap;
+
+  const GlassIconButton({super.key, required this.icon, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(14),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+          child: Container(
+            height: 44,
+            width: 44,
+
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.15),
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.3)),
+            ),
+            alignment: Alignment.center,
+            child: Image.network(icon, height: 24),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class HeroBanner extends StatelessWidget {
   const HeroBanner({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppColors.white,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primaryBlue.withValues(alpha: 0.15),
+            blurRadius: 30,
+            offset: const Offset(0, 15),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -335,32 +407,42 @@ class HeroBanner extends StatelessWidget {
             flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
+              children: [
+                const Text(
                   'Good Morning,\nAdmin 👋',
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 22,
                     fontWeight: FontWeight.w900,
                     color: AppColors.textPrimary,
+                    height: 1.2,
                   ),
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 10),
                 Text(
-                  'Here\'s what\'s happening with your\nRO Water services today.',
+                  'Here\'s what\'s happening with your RO Water services today.',
                   style: TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
+                    fontSize: 13,
+                    color: AppColors.textSecondary.withValues(alpha: 0.8),
+                    height: 1.5,
                   ),
                 ),
               ],
             ),
           ),
+          const SizedBox(width: 16),
           Container(
-            width: 100,
-            height: 100,
+            width: 90,
+            height: 90,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(12),
-              image: DecorationImage(
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.primaryBlue.withValues(alpha: 0.1),
+                  blurRadius: 15,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+              image: const DecorationImage(
                 image: AssetImage(AppImages.roLogo),
                 fit: BoxFit.cover,
               ),
@@ -391,16 +473,15 @@ class TopStatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.shade100),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            color: iconColor.withValues(alpha: 0.12),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -408,33 +489,51 @@ class TopStatCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: iconColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Image.network(icon, height: 20),
-          ),
-          const SizedBox(height: 8),
-          Text(
-            count,
-            style: const TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.w800,
-              color: AppColors.textPrimary,
-            ),
-          ),
-          FittedBox(
-            fit: BoxFit.scaleDown,
-            child: Text(
-              title,
-              style: const TextStyle(
-                fontSize: 13,
-                fontWeight: FontWeight.w500,
-                color: Colors.black54,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  color: iconColor.withValues(alpha: 0.1),
+                  shape: BoxShape.circle,
+                ),
+                child: Image.network(
+                  icon,
+                  height: 24,
+                  width: 24,
+                  errorBuilder: (_, __, ___) =>
+                      Icon(Icons.show_chart, color: iconColor),
+                ),
               ),
-            ),
+              Icon(Icons.trending_up_rounded, color: percentColor, size: 20),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                count,
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w900,
+                  color: AppColors.textPrimary,
+                  letterSpacing: -0.5,
+                ),
+              ),
+              const SizedBox(height: 2),
+              FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -462,148 +561,33 @@ class HeaderCard extends StatelessWidget {
         Row(
           children: [
             Container(
-              padding: const EdgeInsets.all(6),
+              padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
                 color: iconColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(10),
               ),
-              child: Icon(icon, color: iconColor, size: 16),
+              child: Icon(icon, color: iconColor, size: 18),
             ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 12),
             Text(
               title,
               style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                fontWeight: FontWeight.w800,
                 color: AppColors.textPrimary,
               ),
             ),
           ],
         ),
         Text(
-          'View All >',
+          'View All',
           style: TextStyle(
-            fontSize: 11,
+            fontSize: 13,
             color: Colors.blue.shade700,
-            fontWeight: FontWeight.w600,
+            fontWeight: FontWeight.w700,
           ),
         ),
       ],
-    );
-  }
-}
-
-class UpcomingListItem extends StatelessWidget {
-  final String name;
-  final String desc;
-  final String dateTime;
-  final String status;
-  final Color statusColor;
-  final String initials;
-  final Color avatarBg;
-  final Color avatarColor;
-
-  const UpcomingListItem({
-    super.key,
-    required this.name,
-    required this.desc,
-    required this.dateTime,
-    required this.status,
-    required this.statusColor,
-    required this.initials,
-    required this.avatarBg,
-    required this.avatarColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 13),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 18,
-            backgroundColor: avatarBg,
-            child: Text(
-              initials,
-              style: TextStyle(
-                color: avatarColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-              ),
-            ),
-          ),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  desc,
-                  style: const TextStyle(fontSize: 11, color: Colors.black54),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.calendar_today,
-                      size: 10,
-                      color: Colors.black45,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      dateTime,
-                      style: const TextStyle(
-                        fontSize: 10,
-                        color: Colors.black45,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-            decoration: BoxDecoration(
-              color: statusColor.withValues(alpha: 0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Text(
-              status,
-              style: TextStyle(
-                color: statusColor,
-                fontSize: 10,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          const SizedBox(width: 4),
-          const Icon(Icons.chevron_right, size: 16, color: Colors.black26),
-        ],
-      ),
     );
   }
 }
@@ -612,7 +596,6 @@ class QuickActionCard extends StatelessWidget {
   final String icon;
   final String title;
   final Color color;
-
   final VoidCallback onTap;
 
   const QuickActionCard({
@@ -627,6 +610,7 @@ class QuickActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(15),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
         decoration: BoxDecoration(
@@ -635,12 +619,12 @@ class QuickActionCard extends StatelessWidget {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-              color: color.withValues(alpha: 0.3),
-              blurRadius: 10,
-              offset: const Offset(0, 5),
+              color: color.withValues(alpha: 0.35),
+              blurRadius: 15,
+              offset: const Offset(0, 6),
             ),
           ],
         ),
@@ -648,33 +632,33 @@ class QuickActionCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black12,
-                    blurRadius: 4,
-                    offset: Offset(0, 2),
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
               child: Image.network(
                 icon,
-                height: 20,
-                width: 20,
+                height: 24,
+                width: 24,
                 fit: BoxFit.contain,
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
             Text(
               title,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                color: AppColors.white,
+                color: Colors.white,
                 fontSize: 10,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w800,
                 letterSpacing: 0.3,
               ),
             ),
@@ -691,66 +675,89 @@ class RevenueCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        gradient: const LinearGradient(
+          colors: [AppColors.primaryBlue, AppColors.lightBlue],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+            color: AppColors.primaryBlue.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.blue.shade50,
+              color: Colors.white.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              Icons.water_drop,
-              color: Colors.blue.shade300,
-              size: 24,
+            child: const Icon(
+              Icons.account_balance_wallet_rounded,
+              color: Colors.white,
+              size: 28,
             ),
           ),
-          const SizedBox(width: 12),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   'Total Revenue',
-                  style: TextStyle(fontSize: 12, color: Colors.black54),
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.white.withValues(alpha: 0.8),
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text(
                       '₹ 48,750',
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        fontWeight: FontWeight.w900,
+                        color: Colors.white,
                       ),
                     ),
-                    Text(
-                      '↑ 15%',
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.green.shade600,
-                        fontWeight: FontWeight.bold,
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 4,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.2),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: const Text(
+                        '↑ 15%',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 2),
-                const Text(
+                const SizedBox(height: 4),
+                Text(
                   'This Month',
-                  style: TextStyle(fontSize: 10, color: Colors.blue),
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Colors.white.withValues(alpha: 0.7),
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -767,15 +774,15 @@ class InvoiceStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.02),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
+            color: Colors.black.withValues(alpha: 0.03),
+            blurRadius: 15,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
@@ -788,58 +795,63 @@ class InvoiceStatsCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(
-                      Icons.description,
-                      color: Colors.blue.shade300,
-                      size: 16,
+                      Icons.check_circle_rounded,
+                      color: Colors.green.shade400,
+                      size: 18,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 6),
                     const Expanded(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Paid Invoices',
-                          style: TextStyle(fontSize: 12, color: Colors.black54),
+                      child: Text(
+                        'Paid Invoices',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Row(
+                const SizedBox(height: 12),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       '26',
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    const Text(
+                    Text(
                       '81%',
-                      style: TextStyle(fontSize: 11, color: Colors.black45),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black45,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(6),
                   child: LinearProgressIndicator(
                     value: 0.81,
-                    minHeight: 6,
-                    backgroundColor: Colors.grey.shade200,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      Colors.green,
+                    minHeight: 8,
+                    backgroundColor: Colors.grey.shade100,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.green.shade400,
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          const SizedBox(width: 12),
-          Container(width: 1, height: 50, color: Colors.grey.shade200),
-          const SizedBox(width: 12),
+          const SizedBox(width: 16),
+          Container(width: 1, height: 60, color: Colors.grey.shade200),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -847,49 +859,54 @@ class InvoiceStatsCard extends StatelessWidget {
                 Row(
                   children: [
                     Icon(
-                      Icons.access_time,
-                      color: Colors.blue.shade300,
-                      size: 16,
+                      Icons.pending_actions_rounded,
+                      color: Colors.redAccent.shade200,
+                      size: 18,
                     ),
-                    const SizedBox(width: 4),
+                    const SizedBox(width: 6),
                     const Expanded(
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          'Pending Invoices',
-                          style: TextStyle(fontSize: 12, color: Colors.black54),
+                      child: Text(
+                        'Pending Invoices',
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: AppColors.textSecondary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 8),
-                Row(
+                const SizedBox(height: 12),
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
+                    Text(
                       '6',
                       style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w900,
+                        color: AppColors.textPrimary,
                       ),
                     ),
-                    const Text(
+                    Text(
                       '19%',
-                      style: TextStyle(fontSize: 11, color: Colors.black45),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.black45,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 6),
+                const SizedBox(height: 8),
                 ClipRRect(
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(6),
                   child: LinearProgressIndicator(
                     value: 0.19,
-                    minHeight: 6,
-                    backgroundColor: Colors.grey.shade200,
-                    valueColor: const AlwaysStoppedAnimation<Color>(
-                      Colors.redAccent,
+                    minHeight: 8,
+                    backgroundColor: Colors.grey.shade100,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      Colors.redAccent.shade200,
                     ),
                   ),
                 ),

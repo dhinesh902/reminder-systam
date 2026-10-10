@@ -5,6 +5,7 @@ import 'package:reminder/routes/app_routes.dart';
 import 'package:reminder/widgets/custom_dialogues.dart';
 import 'package:reminder/widgets/add_button.dart';
 import 'package:reminder/widgets/custom_search_bar.dart';
+import 'package:reminder/widgets/custom_popup_menu.dart';
 
 class Products extends StatelessWidget {
   const Products({super.key});
@@ -37,59 +38,21 @@ class Products extends StatelessWidget {
                     const ProductCategoryChips(),
                     const SizedBox(height: 16),
                     Expanded(
-                      child: ListView(
+                      child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 150),
-                        children: const [
-                          ProductCard(
+                        padding: const EdgeInsets.fromLTRB(15, 0, 15, 100),
+                        itemCount: 5,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ProductCard(
                             title: 'RO Water Purifier',
                             subtitle: 'AquaFresh Pro',
                             price: '12,500.00',
                             category: 'RO Purifier',
                             icon: Icons.water_drop,
                             inStock: true,
-                          ),
-                          ProductCard(
-                            title: 'Sediment Filter',
-                            subtitle: '10 Inch',
-                            price: '350.00',
-                            category: 'Filter',
-                            icon: Icons.filter_alt,
-                            inStock: true,
-                          ),
-                          ProductCard(
-                            title: 'Carbon Filter',
-                            subtitle: '10 Inch',
-                            price: '450.00',
-                            category: 'Filter',
-                            icon: Icons.kitchen,
-                            inStock: true,
-                          ),
-                          ProductCard(
-                            title: 'RO Membrane',
-                            subtitle: '75 GPD',
-                            price: '1,800.00',
-                            category: 'Spare Parts',
-                            icon: Icons.settings_input_component,
-                            inStock: true,
-                          ),
-                          ProductCard(
-                            title: 'Post Carbon Filter',
-                            subtitle: '10 Inch',
-                            price: '400.00',
-                            category: 'Filter',
-                            icon: Icons.layers,
-                            inStock: true,
-                          ),
-                          ProductCard(
-                            title: 'Booster Pump',
-                            subtitle: '100 PSI',
-                            price: '2,500.00',
-                            category: 'Spare Parts',
-                            icon: Icons.power,
-                            inStock: true,
-                          ),
-                        ],
+                          );
+                        },
                       ),
                     ),
                   ],
@@ -101,10 +64,9 @@ class Products extends StatelessWidget {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: CustomFloatingAddButton(
-        padding: const EdgeInsets.only(bottom: 70),
         title: "Add Product",
         onTap: () {
-          // context.push(AppRoutes.addProduct);
+          context.push(AppRoutes.addProduct);
         },
       ),
     );
@@ -275,12 +237,19 @@ class ProductCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           title,
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.primaryBlue),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryBlue,
+                          ),
                         ),
                       ),
                       if (inStock)
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 6,
+                            vertical: 2,
+                          ),
                           decoration: BoxDecoration(
                             color: Colors.green.shade50,
                             borderRadius: BorderRadius.circular(4),
@@ -288,46 +257,65 @@ class ProductCard extends StatelessWidget {
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: const [
-                              Icon(Icons.check_circle, color: Colors.green, size: 10),
+                              Icon(
+                                Icons.check_circle,
+                                color: Colors.green,
+                                size: 10,
+                              ),
                               SizedBox(width: 2),
-                              Text('In Stock', style: TextStyle(color: Colors.green, fontSize: 9, fontWeight: FontWeight.bold)),
+                              Text(
+                                'In Stock',
+                                style: TextStyle(
+                                  color: Colors.green,
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       const SizedBox(width: 8),
-                      PopupMenuButton<String>(
-                        icon: const Icon(Icons.more_vert, color: Colors.blueGrey, size: 18),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onSelected: (value) {
-                          if (value == 'delete') {
-                            CustomDialogues.showDeleteConfirmationDialog(
-                              context,
-                              title: 'Delete Product',
-                              content: 'Are you sure you want to delete this product? This action cannot be undone.',
-                              onConfirm: () {},
-                            );
-                          }
-                        },
-                        itemBuilder: (context) => [
-                          const PopupMenuItem(value: 'edit', child: Text('Edit')),
-                          const PopupMenuItem(value: 'delete', child: Text('Delete', style: TextStyle(color: Colors.red))),
-                        ],
+                      CustomPopupMenu(
+                        deleteTitle: 'Delete Product',
+                        deleteContent:
+                            'Are you sure you want to delete this product? This action cannot be undone.',
+                        onEdit: () {},
+                        onDelete: () {},
                       ),
                     ],
                   ),
                   const SizedBox(height: 4),
-                  Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                  ),
                   const SizedBox(height: 8),
-                  Text('₹ $price', style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w900, color: AppColors.primaryBlue)),
+                  Text(
+                    '₹ $price',
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.primaryBlue,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 3,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFEAF2FF),
                       borderRadius: BorderRadius.circular(4),
                     ),
-                    child: Text(category, style: const TextStyle(color: AppColors.primaryBlue, fontSize: 10, fontWeight: FontWeight.w500)),
+                    child: Text(
+                      category,
+                      style: const TextStyle(
+                        color: AppColors.primaryBlue,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   ),
                 ],
               ),

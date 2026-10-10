@@ -6,6 +6,7 @@ import 'package:reminder/widgets/add_button.dart';
 import 'package:reminder/widgets/custom_search_bar.dart';
 import 'package:reminder/utils/date/dateutils.dart';
 import 'package:reminder/utils/custom_launchers.dart';
+import 'package:reminder/widgets/custom_popup_menu.dart';
 import 'package:intl/intl.dart';
 
 class Customers extends StatelessWidget {
@@ -217,153 +218,240 @@ class CustomerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.03),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: const BoxDecoration(
-              color: Color(0xFFE8F4FA),
-              shape: BoxShape.circle,
+    return InkWell(
+      onTap: () {
+        context.push(AppRoutes.customerDetail);
+      },
+      borderRadius: BorderRadius.circular(24),
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(18),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(24),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primaryBlue.withValues(alpha: 0.06),
+              blurRadius: 20,
+              offset: const Offset(0, 8),
             ),
-            child: Center(
-              child: Text(
-                initials,
-                style: const TextStyle(
-                  color: AppColors.primaryBlue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Avatar
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlue.withValues(alpha: 0.08),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.primaryBlue.withValues(alpha: 0.15),
+                  width: 1,
+                ),
+              ),
+              child: Center(
+                child: Text(
+                  initials,
+                  style: const TextStyle(
+                    color: AppColors.primaryBlue,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 18,
+                  ),
                 ),
               ),
             ),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.primaryBlue,
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.textPrimary,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              phone,
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () => openCall(phone),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.blue.shade50,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(
-                              Icons.call,
-                              color: Colors.blue.shade700,
-                              size: 16,
-                            ),
+                      // Action Buttons
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const SizedBox(width: 4),
+                          CustomPopupMenu(
+                            deleteTitle: 'Delete Customer',
+                            deleteContent:
+                                'Are you sure you want to delete this customer? This action cannot be undone.',
+                            onEdit: () {},
+                            onDelete: () {},
                           ),
-                        ),
-                        const SizedBox(width: 8),
-                        GestureDetector(
-                          onTap: () => openWhatsApp(phone),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.green.shade50,
-                              shape: BoxShape.circle,
-                            ),
-                            child: Image.network(
-                              "https://cdn-icons-png.flaticon.com/128/3670/3670051.png",
-                              height: 16,
-                              width: 16,
-                            ),
+                          Row(
+                            children: [
+                              BuildActionCallButton(
+                                icon: Icons.call_rounded,
+                                color: Colors.blue.shade600,
+                                bgColor: Colors.blue.shade50,
+                                onTap: () => openCall(phone),
+                              ),
+                              const SizedBox(width: 10),
+                              BuildActionWhatsapp(
+                                imageUrl:
+                                    "https://cdn-icons-png.flaticon.com/128/3670/3670051.png",
+                                bgColor: Colors.green.shade50,
+                                onTap: () => openWhatsApp(phone),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  phone,
-                  style: const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black54,
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.location_on_outlined,
-                      size: 14,
-                      color: Colors.grey,
+
+                  const SizedBox(height: 14),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
                     ),
-                    const SizedBox(width: 6),
-                    Text(
-                      location,
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.black54,
-                      ),
+                    decoration: BoxDecoration(
+                      color: AppColors.inputBackground,
+                      borderRadius: BorderRadius.circular(14),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+                    child: Row(
                       children: [
-                        const Icon(
-                          Icons.water_drop_outlined,
-                          size: 14,
-                          color: Colors.grey,
-                        ),
-                        const SizedBox(width: 6),
-                        Text(
-                          device,
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: Colors.black54,
+                        Expanded(
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_rounded,
+                                size: 14,
+                                color: AppColors.primaryBlue,
+                              ),
+                              const SizedBox(width: 6),
+                              Expanded(
+                                child: Text(
+                                  location,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w600,
+                                    color: AppColors.textSecondary,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        Container(
+                          width: 1,
+                          height: 14,
+                          color: Colors.grey.withValues(alpha: 0.3),
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.water_drop_rounded,
+                              size: 14,
+                              color: Colors.lightBlue,
+                            ),
+                            const SizedBox(width: 4),
+                            Text(
+                              device,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.textSecondary,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 14,
-                      color: Colors.grey,
-                    ),
-                  ],
-                ),
-              ],
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BuildActionCallButton extends StatelessWidget {
+  const BuildActionCallButton({
+    super.key,
+    required this.icon,
+    required this.color,
+    required this.bgColor,
+    required this.onTap,
+  });
+
+  final IconData icon;
+  final Color color;
+  final Color bgColor;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+        child: Icon(icon, color: color, size: 18),
+      ),
+    );
+  }
+}
+
+class BuildActionWhatsapp extends StatelessWidget {
+  const BuildActionWhatsapp({
+    super.key,
+    required this.imageUrl,
+    required this.bgColor,
+    required this.onTap,
+  });
+
+  final String imageUrl;
+  final Color bgColor;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(color: bgColor, shape: BoxShape.circle),
+        child: Image.network(imageUrl, height: 18, width: 18),
       ),
     );
   }

@@ -12,9 +12,11 @@ class AppRoutes {
   static const String addProduct = '/addProduct';
   static const String addService = '/addService';
   static const String addFollowup = '/addFollowup';
+  static const String followupDetails = '/followupDetails';
   static const String addCustomerProduct = '/addCustomerProduct';
   static const String addServiceHistory = '/addServiceHistory';
   static const String productDetail = '/productDetail';
   static const String serviceDetail = '/serviceDetail';
+  static const String customerDetail = '/customerDetail';
 }
 

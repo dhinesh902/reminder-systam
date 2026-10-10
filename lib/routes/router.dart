@@ -5,7 +5,9 @@ import 'package:reminder/views/auth/onboard.dart';
 import 'package:reminder/views/auth/splash.dart';
 import 'package:reminder/views/main_dashboard/customers/add_customer_product.dart';
 import 'package:reminder/views/main_dashboard/customers/add_customers.dart';
+import 'package:reminder/views/main_dashboard/customers/customer_detail.dart';
 import 'package:reminder/views/main_dashboard/followups/add_follwups.dart';
+import 'package:reminder/views/main_dashboard/followups/followup_detail.dart';
 import 'package:reminder/views/main_dashboard/main_dashboard.dart';
 import 'package:reminder/views/main_dashboard/notifications/notifications.dart';
 import 'package:reminder/views/main_dashboard/invoices/invoices.dart';
@@ -89,6 +91,14 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.serviceDetail,
         builder: (context, state) => const ServiceDetail(),
+      ),
+      GoRoute(
+        path: AppRoutes.customerDetail,
+        builder: (context, state) => const CustomerDetail(),
+      ),
+      GoRoute(
+        path: AppRoutes.followupDetails,
+        builder: (context, state) => const FollowupDetail(),
       ),
     ],
   );
