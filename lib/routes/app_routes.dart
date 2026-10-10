@@ -18,5 +18,8 @@ class AppRoutes {
   static const String productDetail = '/productDetail';
   static const String serviceDetail = '/serviceDetail';
   static const String customerDetail = '/customerDetail';
+  static const String editProfile = '/editProfile';
+  static const String serviceHistory = '/serviceHistory';
+  static const String serviceHistoryDetail = '/serviceHistoryDetail';
 }
 

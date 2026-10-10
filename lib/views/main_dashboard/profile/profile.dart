@@ -188,12 +188,13 @@ class Profile extends StatelessWidget {
                         vertical: 36,
                       ),
                       child: Column(
-                        children: const [
+                        children: [
                           ProfileListTile(
                             icon:
                                 "https://cdn-icons-png.flaticon.com/128/1077/1077012.png",
                             title: 'Edit Profile',
                             subtitle: 'Edit your profile',
+                            onTap: () => context.push(AppRoutes.editProfile),
                           ),
                           ProfileDivider(),
                           ProfileListTile(
@@ -208,6 +209,7 @@ class Profile extends StatelessWidget {
                                 "https://cdn-icons-png.flaticon.com/128/3631/3631163.png",
                             title: 'Services History',
                             subtitle: 'View service history and upcoming',
+                            onTap: () => context.push(AppRoutes.serviceHistory),
                           ),
                           ProfileDivider(),
                           ProfileListTile(
@@ -251,73 +253,78 @@ class ProfileListTile extends StatelessWidget {
   final String icon;
   final String title;
   final String subtitle;
+  final VoidCallback? onTap;
 
   const ProfileListTile({
     super.key,
     required this.icon,
     required this.title,
     required this.subtitle,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: AppColors.primaryBlue.withValues(alpha: .04),
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.primaryBlue.withOpacity(0.05),
-                  blurRadius: 8,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Image.network(icon, height: 22),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.primaryBlue,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        child: Row(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.primaryBlue.withValues(alpha: .04),
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primaryBlue.withOpacity(0.05),
+                    blurRadius: 8,
+                    offset: const Offset(0, 4),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  subtitle,
-                  style: const TextStyle(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.black54,
+                ],
+              ),
+              child: Image.network(icon, height: 22),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.primaryBlue,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF7F9FC),
-              shape: BoxShape.circle,
+            Container(
+              padding: const EdgeInsets.all(8),
+              decoration: const BoxDecoration(
+                color: Color(0xFFF7F9FC),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.arrow_forward_ios,
+                color: AppColors.primaryBlue,
+                size: 12,
+              ),
             ),
-            child: const Icon(
-              Icons.arrow_forward_ios,
-              color: AppColors.primaryBlue,
-              size: 12,
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -347,13 +354,23 @@ class ProfileLogoutButton extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           backgroundColor: Colors.white,
-          titlePadding: const EdgeInsets.only(top: 24, left: 24, right: 24, bottom: 12),
-          contentPadding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
-          actionsPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          titlePadding: const EdgeInsets.only(
+            top: 24,
+            left: 24,
+            right: 24,
+            bottom: 12,
+          ),
+          contentPadding: const EdgeInsets.only(
+            left: 24,
+            right: 24,
+            bottom: 24,
+          ),
+          actionsPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
           title: const Text(
             'Confirm Logout',
             style: TextStyle(
@@ -375,14 +392,14 @@ class ProfileLogoutButton extends StatelessWidget {
               onPressed: () => Navigator.pop(context),
               style: TextButton.styleFrom(
                 foregroundColor: AppColors.textSecondary,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
               ),
               child: const Text(
                 'Cancel',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
               ),
             ),
             ElevatedButton(
@@ -396,7 +413,10 @@ class ProfileLogoutButton extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(6),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
               ),
               child: const Text(
                 'Logout',
@@ -419,7 +439,7 @@ class ProfileLogoutButton extends StatelessWidget {
       onTap: () => _showLogoutDialog(context),
       child: Container(
         width: double.infinity,
-        padding:  EdgeInsets.symmetric(vertical: 18),
+        padding: EdgeInsets.symmetric(vertical: 18),
         decoration: BoxDecoration(
           color: AppColors.darkRed.withValues(alpha: .7),
           borderRadius: BorderRadius.circular(15),

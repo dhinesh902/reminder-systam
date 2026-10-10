@@ -19,6 +19,9 @@ import 'package:reminder/views/main_dashboard/services/add_service_history.dart'
 import 'package:reminder/views/main_dashboard/services/add_services.dart';
 import 'package:reminder/views/main_dashboard/products/product_detail.dart';
 import 'package:reminder/views/main_dashboard/services/service_detail.dart';
+import 'package:reminder/views/main_dashboard/profile/edit_profile.dart';
+import 'package:reminder/views/main_dashboard/services/service_history.dart';
+import 'package:reminder/views/main_dashboard/services/service_history_detail.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -99,6 +102,18 @@ class AppRouter {
       GoRoute(
         path: AppRoutes.followupDetails,
         builder: (context, state) => const FollowupDetail(),
+      ),
+      GoRoute(
+        path: AppRoutes.editProfile,
+        builder: (context, state) => const EditProfile(),
+      ),
+      GoRoute(
+        path: AppRoutes.serviceHistory,
+        builder: (context, state) => const ServiceHistory(),
+      ),
+      GoRoute(
+        path: AppRoutes.serviceHistoryDetail,
+        builder: (context, state) => const ServiceHistoryDetail(),
       ),
     ],
   );

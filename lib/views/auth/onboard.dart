@@ -22,7 +22,7 @@ class _OnboardState extends State<Onboard> {
       "subtitle":
           "Seamlessly monitor your RO system's health, TDS levels, and water flow directly from your corporate dashboard.",
       "image":
-          "https://www.hindustantimes.com/ht-img/img/2025/11/17/960x540/Water_purifiers_1763370051411_1763370067595_1763372971234.png",
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDMCO4w0xfbv92P9-H1xN7U9EZs2brareUWyzMlg4I8Q&s=10",
     },
     {
       "title": "Automated Maintenance",
